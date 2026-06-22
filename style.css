@@ -416,6 +416,15 @@ img { display:block; max-width:100%; }
 .ch-ct { padding:3rem 360px 0; }
 .ch-bd { padding:0 360px var(--gap-sec); }
 .ch-ey { font-family:var(--ff-mono); font-size:var(--t-mono); letter-spacing:.2em; text-transform:uppercase; color:var(--c-dim); margin-bottom:.875rem; }
+.ch-autoral-badge {
+  display:inline-block;
+  font-family:var(--ff-mono); font-size:.55rem;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--c-gold); background:rgba(201,169,110,.1);
+  border:0.5px solid rgba(201,169,110,.3);
+  padding:3px 10px; border-radius:4px;
+  margin-bottom:.75rem;
+}
 .ch-title { font-family:var(--ff-body); font-size:clamp(2.8rem,6vw,5rem); font-weight:700; letter-spacing:-.015em; line-height:.95; color:var(--c-text); margin-bottom:1.5rem; }
 .ch-title em { font-style:italic; color:var(--c-gold); font-weight:400; }
 .ch-meta { display:flex; gap:2.5rem; flex-wrap:wrap; margin-bottom:2.5rem; padding-bottom:2rem; border-bottom:1px solid var(--c-line); }
@@ -1260,30 +1269,73 @@ a:focus-visible, button:focus-visible, .pc:focus-visible { outline:2px solid var
   .ch-comp-sidebyside { max-width:100%; }
 }
 
-/* ── Telas Lista vertical ── */
-.ch-telas-list { display:flex; flex-direction:column; gap:8px; margin:1rem 0 3rem; }
-.ch-telas-list-item {
-  display:grid; grid-template-columns:72px 1fr;
-  border:1px solid var(--c-line); border-radius:8px;
-  overflow:hidden; cursor:zoom-in; transition:border-color .2s;
+/* ── Coverflow ── */
+.cf-wrap {
+  position:relative; overflow:hidden;
+  margin:1rem 0 2rem; padding:2rem 0 1rem;
 }
-.ch-telas-list-item:hover { border-color:var(--c-dim); }
-.ch-telas-list-side {
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  gap:.6rem; padding:1rem .5rem;
-  border-right:1px solid var(--c-line);
-  background:var(--c-bg3);
+.cf-track {
+  position:relative;
+  height:320px;
 }
-.ch-telas-list-num {
-  font-family:var(--ff-mono); font-size:1.1rem;
-  font-weight:700; color:var(--c-gold); line-height:1;
+.cf-card {
+  position:absolute; top:50%;
+  width:200px;
+  border-radius:12px; overflow:hidden;
+  border:1px solid var(--c-line); background:var(--c-bg2);
+  cursor:pointer;
+  transform-origin:center center;
+  transition:left .5s cubic-bezier(.16,1,.3,1),
+             transform .5s cubic-bezier(.16,1,.3,1),
+             opacity .5s ease,
+             box-shadow .5s ease,
+             border-color .5s ease;
 }
-.ch-telas-list-name {
-  font-size:.55rem; font-weight:300; color:var(--c-dim);
-  text-align:center; line-height:1.5;
-  writing-mode:vertical-rl; transform:rotate(180deg);
-  max-height:120px; overflow:hidden;
+.cf-card.active {
+  box-shadow:0 24px 64px rgba(0,0,0,.6), 0 0 0 1px rgba(201,169,110,.2);
+  border-color:rgba(201,169,110,.3);
+  cursor:zoom-in;
 }
-.ch-telas-list-img { line-height:0; background:var(--c-bg3); }
-.ch-telas-list-img img { width:100%; height:auto; display:block; }
+.cf-card img { width:100%; height:auto; display:block; pointer-events:none; }
+.cf-card-label {
+  padding:.5rem .75rem;
+  border-top:1px solid var(--c-line); background:var(--c-bg3);
+  display:flex; align-items:center; gap:.5rem;
+}
+.cf-card-num {
+  font-family:var(--ff-mono); font-size:.5rem;
+  letter-spacing:.1em; color:var(--c-gold); flex-shrink:0;
+}
+.cf-card-name {
+  font-size:.62rem; font-weight:300; color:var(--c-dim);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.cf-card.active .cf-card-name { color:var(--c-muted); }
+.cf-nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; margin-top:1.5rem;
+}
+.cf-btn {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--c-bg2); border:1px solid var(--c-line);
+  color:var(--c-muted); font-size:.9rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s, color .2s, border-color .2s;
+}
+.cf-btn:hover { background:var(--c-bg3); color:var(--c-text); border-color:var(--c-dim); }
+.cf-dots { display:flex; gap:5px; align-items:center; }
+.cf-dot-nav {
+  width:5px; height:5px; border-radius:50%;
+  background:var(--c-line); cursor:pointer;
+  transition:background .2s, width .2s;
+}
+.cf-dot-nav.active { width:16px; border-radius:3px; background:var(--c-gold); }
+.cf-counter {
+  font-family:var(--ff-mono); font-size:.58rem;
+  letter-spacing:.1em; color:var(--c-dim);
+  min-width:40px; text-align:center;
+}
+@media(max-width:900px){
+  .cf-track { height:220px; }
+  .cf-card { width:130px; }
+}

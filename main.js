@@ -293,6 +293,7 @@ setTimeout(() => {
 const CASES={
   wellhub:{
     color:'#0F6E56',bg:'#111',
+    autoral:true,
     carousel:['wellhub-problema-1.jpg','wellhub-problema-2.jpg','wellhub-problema-3.jpg','wellhub-problema-4.jpg','wellhub-problema-5.jpg','wellhub-problema-6.jpg','wellhub-problema-7.jpg','wellhub-problema-8.jpg','wellhub-problema-9.jpg','wellhub-problema-10.jpg'],
     comparativo:['wellhub-comp-1.jpg','wellhub-comp-2.jpg','wellhub-comp-3.jpg','wellhub-comp-4.jpg'],
     ey:'UX/UI · Gamification · Wellness',
@@ -601,7 +602,8 @@ function openCase(id,title){
   // Header
   const ct=document.createElement('div');
   ct.className='ch-ct';
-  ct.innerHTML='<div class="ch-ey">'+d.ey+'</div>'
+  ct.innerHTML=(d.autoral ? '<div class="ch-autoral-badge" data-pt="Case Autoral" data-en="Personal Project">Case Autoral</div>' : '')
+    +'<div class="ch-ey">'+d.ey+'</div>'
     +'<div class="ch-title">'+d.ttl+'</div>';
   ch.appendChild(ct);
 
@@ -691,18 +693,31 @@ function openCase(id,title){
     +(c.telas ? (function(){
       if(c.telasGrid){
         var labels = c.telasLabels || [];
+        var dots = c.telas.map(function(_,i){
+          return '<div class="cf-dot-nav'+(i===0?' active':'')+'" data-cf-idx="'+i+'"></div>';
+        }).join('');
+        var cards = c.telas.map(function(img,i){
+          var num = ('0'+(i+1)).slice(-2);
+          var name = labels[i] || '';
+          var cls = i===0?' active':i===1?' near':'';
+          return '<div class="cf-card'+cls+'" data-cf-i="'+i+'" data-img="img/'+img+'">'
+            +'<img src="img/'+img+'" alt="Tela '+num+'" loading="lazy">'
+            +'<div class="cf-card-label">'
+              +'<span class="cf-card-num">'+num+'</span>'
+              +(name ? '<span class="cf-card-name">'+name+'</span>' : '')
+            +'</div>'
+          +'</div>';
+        }).join('');
         return '<h3>'+t("Screens","Telas")+'</h3>'
-          +'<div class="ch-telas-list">'+c.telas.map(function(img,i){
-            var num = ('0'+(i+1)).slice(-2);
-            var name = labels[i] || '';
-            return '<div class="ch-telas-list-item" onclick="lbOpen(\'img/'+img+'\')">'
-              +'<div class="ch-telas-list-side">'
-                +'<span class="ch-telas-list-num">'+num+'</span>'
-                +(name ? '<span class="ch-telas-list-name">'+name+'</span>' : '')
-              +'</div>'
-              +'<div class="ch-telas-list-img"><img src="img/'+img+'" alt="Tela '+num+'" loading="lazy"></div>'
-            +'</div>';
-          }).join('')+'</div>';
+          +'<div class="cf-wrap" id="cf-wrap-'+id+'">'
+            +'<div class="cf-track">'+cards+'</div>'
+            +'<div class="cf-nav">'
+              +'<button class="cf-btn cf-btn-prev">&#8249;</button>'
+              +'<div class="cf-dots">'+dots+'</div>'
+              +'<button class="cf-btn cf-btn-next">&#8250;</button>'
+              +'<span class="cf-counter">1 / '+c.telas.length+'</span>'
+            +'</div>'
+          +'</div>';
       }
       var ratio = c.telaRatio || '392/852';
       return '<h3>'+t("Screens","Telas")+'</h3>'
@@ -743,6 +758,7 @@ function openCase(id,title){
   window.scrollTo({top:0,behavior:'instant'});
   setTimeout(animateCaseEntrance,50);
   setTimeout(initCompSliders,100);
+  setTimeout(function(){ initCoverflow(id); },150);
 }
 
 
@@ -858,6 +874,64 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape') closeFeedback
     }, {passive:true});
   });
 })();
+
+/* ── Coverflow ── */
+function initCoverflow(id){
+  var wrap = document.getElementById('cf-wrap-'+id);
+  if(!wrap) return;
+  var track = wrap.querySelector('.cf-track');
+  var cards = Array.from(track.querySelectorAll('.cf-card'));
+  var dots = Array.from(wrap.querySelectorAll('.cf-dot-nav'));
+  var counter = wrap.querySelector('.cf-counter');
+  var total = cards.length;
+  var current = 0;
+  var CARD_W = 200;
+  var GAP = 16;
+  var VISIBLE = 3;
+
+  function render(){
+    var wrapW = wrap.offsetWidth;
+    var centerX = wrapW / 2;
+    cards.forEach(function(card, i){
+      var dist = ((i - current + total) % total);
+      if(dist > total / 2) dist -= total;
+      var absD = Math.abs(dist);
+      card.classList.remove('active','near');
+      if(absD === 0) card.classList.add('active');
+      else if(absD === 1) card.classList.add('near');
+      var x = centerX + dist * (CARD_W + GAP) - CARD_W / 2;
+      var scale = absD===0 ? 1.08 : absD===1 ? 0.92 : 0.82;
+      var opacity = absD===0 ? 1 : absD===1 ? 0.65 : absD<=VISIBLE ? 0.35 : 0;
+      card.style.left = x + 'px';
+      card.style.transform = 'translateY(-50%) scale('+scale+')';
+      card.style.opacity = opacity;
+      card.style.zIndex = total - absD;
+      card.style.pointerEvents = absD > VISIBLE ? 'none' : 'auto';
+    });
+    dots.forEach(function(dot, i){
+      dot.classList.toggle('active', i === current);
+    });
+    if(counter) counter.textContent = (current+1)+' / '+total;
+  }
+
+  cards.forEach(function(card, i){
+    card.addEventListener('click', function(){
+      if(i === current){ lbOpen(card.dataset.img); }
+      else { current = i; render(); }
+    });
+  });
+  dots.forEach(function(dot, i){
+    dot.addEventListener('click', function(){ current = i; render(); });
+  });
+  wrap.querySelector('.cf-btn-prev').addEventListener('click', function(){
+    current = ((current - 1 + total) % total); render();
+  });
+  wrap.querySelector('.cf-btn-next').addEventListener('click', function(){
+    current = ((current + 1) % total); render();
+  });
+
+  render();
+}
 
 /* ── Before / After Slider ── */
 function initCompSliders(){
