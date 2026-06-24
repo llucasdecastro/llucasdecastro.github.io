@@ -1214,21 +1214,24 @@ a:focus-visible, button:focus-visible, .pc:focus-visible { outline:2px solid var
   font-family:var(--ff-mono); font-size:.55rem;
   letter-spacing:.12em; text-transform:uppercase; color:var(--c-dim);
 }
-.ch-video-el {
-  display:block;
+.ch-video-box {
+  position:relative; background:#000;
   border-radius:12px; border:1px solid var(--c-line);
-  background:#000;
+  overflow:hidden;
 }
-.ch-video-el.portrait {
+.ch-video-box.portrait {
   width:100%; max-width:340px;
-  height:auto;
 }
-.ch-video-el.landscape {
-  width:100%; height:auto;
-  max-height:70vh;
+.ch-video-box.landscape {
+  width:100%;
+}
+.ch-video-box video {
+  position:absolute; top:0; left:0;
+  width:100%; height:100%;
+  display:block;
 }
 @media(max-width:900px){
-  .ch-video-el.portrait { max-width:260px; }
+  .ch-video-box.portrait { max-width:260px; }
 }
 .ch-slider-wrap { margin:1rem 0 3rem; }
 .ch-slider-label {
