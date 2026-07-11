@@ -607,6 +607,87 @@ const CASES={
       ]
     }
   }
+  ,
+  itau:{
+    color:'#EC7000',bg:'#111',
+    ey:'White Label · Design System · Fintech',
+    ttl:'Por fora, Itaú.<br><em>Por dentro, BomConsórcio.</em>',
+    meta:['Product Designer','BomConsórcio × Itaú · Fintech','Figma'],
+    orgImg:'img-figma-white-label.jpg',
+    processoImg:'User-Flow-White-Label-Itaú.jpg',
+    mobileImg:'mockup-mobile-itaú.jpg',
+    cfCardW:640,
+    telas:['itau-tela-01.jpg','itau-tela-02.jpg','itau-tela-03.jpg','itau-tela-04.jpg','itau-tela-05.jpg','itau-tela-06.jpg','itau-tela-07.jpg','itau-tela-08.jpg','itau-tela-09.jpg','itau-tela-10.jpg','itau-tela-11.jpg'],
+    telasLabels:['Início — LP Itaú','Cadastro — Início','Cadastro — Dados','Cadastro — Criar conta','Cadastro — Confirmar e-mail','Cadastro — Verificação de identidade','Cadastro — Conta criada com sucesso','Login — Início','Login — Encontrar cota','Login — Oferta','Estado de exceção — cota'],
+    hook:'"O prazo era curto e a régua era de banco. Não bastava reaproveitar o motor do BomConsórcio, cada pixel precisava passar pela aprovação de marca do Itaú antes de ir ao ar. O desafio não era desenhar do zero. Era fazer um sistema inteiro parecer que sempre foi do banco, sem parar a operação para reconstruir."',
+    context:'<p>O objetivo do fluxo é simples de descrever e complexo de entregar: o cliente Itaú com uma cota de consórcio cancelada entra no sistema e recebe uma oferta de antecipação de crédito pela cota, seguindo o mesmo motor de venda secundária já validado pelo BomConsórcio. Do clique inicial até a oferta na tela, ele passa por um processo completo de identificação, validação e simulação.</p><p>A white label foi dividida em dois ambientes. O <strong>Ambiente 1 (externo)</strong> cobre tudo antes do login — landing page da parceria, cadastro, validação por token e recuperação de senha. O <strong>Ambiente 2 (interno)</strong> começa depois que o cliente entra no sistema — localização da cota, verificação de identidade e simulação da oferta. Os dois precisavam ter a mesma coerência visual e de marca, mesmo sendo etapas e contextos completamente diferentes.</p>',
+    diags:[
+      {icon:'🎨',title:'Sem camada de tema isolada',desc:'A base do BomConsórcio não separava marca de lógica de fluxo. Cor, tipografia e logo estavam direto nos componentes, então trocar a marca significava reescrever telas, não substituir uma camada.'},
+      {icon:'🏦',title:'Régua de aprovação de banco',desc:'Cada tela passava pelo time de branding do Itaú antes do desenvolvimento. Um tom de laranja fora do manual ou um peso de fonte errado podia travar a entrega por dias.'},
+      {icon:'🧩',title:'Dois ambientes, uma só marca',desc:'O ambiente externo (pré-login) e o interno (pós-login) tinham propósitos e telas completamente diferentes, mas precisavam parecer parte do mesmo sistema Itaú do início ao fim, sem costura visível entre eles.'},
+      {icon:'🔀',title:'Duas marcas, um mesmo login',desc:'Clientes com cota de outra administradora precisavam ser identificados e redirecionados sem confundir qual sistema estavam usando.'},
+      {icon:'📢',title:'Parceria banco + fintech sem lugar pra explicar',desc:'Não existia página que justificasse por que um cliente do Itaú deveria confiar numa fintech parceira para vender a cota. Sem essa camada, a desconfiança inicial era um risco real de abandono.'}
+    ],
+    kpis:[
+      {icon:'🗺️',label:'Cobertura mapeada',val:'PF + PJ · Desktop + App',desc:'Jornada completa mapeada e desenhada: acesso ao site, cadastro, validação por token, login, recuperação de senha, localização de cota, oferta e estados de erro'},
+      {icon:'⏱',label:'Tempo de aprovação de marca',val:'Ciclo de revisão',desc:'Dias entre entrega de tela e aprovação do time de branding do Itaú'},
+      {icon:'♻️',label:'Reuso do design system',val:'% de componentes',desc:'Proporção de componentes do BomConsórcio reaproveitados sem reconstrução'},
+      {icon:'🚀',label:'Tempo até o ar',val:'Kickoff → Lançamento',desc:'Tempo total entre o início do projeto e o lançamento da versão white label'}
+    ],
+    role:'Product Designer responsável pela white label completa do fluxo BomConsórcio para o Itaú, cobrindo os dois ambientes do produto — externo (pré-login) e interno (pós-login) — em versão desktop e app, para pessoa física e pessoa jurídica. Mapeei toda a jornada do usuário: acesso ao site, cadastro, validação via token, verificação de identidade, login, recuperação de senha, localização da cota, simulação de oferta e estados de erro. Construí também um mini design system para sustentar essa adaptação. Atuação direta com a responsável por branding do Itaú.',
+    insight:'<p>White label não é reskin. A tentação era tratar a adaptação como troca de cor e logo, mas a régua de aprovação de banco expôs uma dívida estrutural: o BomConsórcio não tinha uma camada de tema separada da lógica de fluxo. O trabalho real foi <strong>tokenizar a marca</strong> — isolar o que era "Itaú" do que era "processo de venda de cota" — para que qualquer próxima marca parceira pudesse ser plugada sem reescrever nada. Compliance de banco não é obstáculo de design, é um teste de arquitetura.</p>',
+    objetivo:'Entregar uma versão white label completa do fluxo BomConsórcio — ambientes externo e interno, desktop e app, pessoa física e jurídica — totalmente alinhada à marca e ao compliance do Itaú, com um mini design system que sustentasse a jornada inteira, do acesso ao site até a oferta pela cota.',
+    krs:[
+      {txt:'Reduzir o tempo médio de aprovação de marca por tela',meta:'-40% (hipótese)'},
+      {txt:'Aumentar a proporção de componentes reaproveitados sem reconstrução',meta:'80%+ (hipótese)'},
+      {txt:'Lançar a versão white label dentro do prazo acordado com o Itaú',meta:'No prazo'}
+    ],
+    sol:'<div class="ch-sol-cards"><div class="ch-sol-card"><div class="ch-sol-card-num">01</div><div class="ch-sol-card-title">Tokenização de marca</div><div class="ch-sol-card-desc">Cor, tipografia, logo e ícones do header foram isolados em uma camada de tema, plugável por cima da arquitetura de fluxo do BomConsórcio — sem tocar na lógica de cadastro, oferta ou verificação de identidade.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">02</div><div class="ch-sol-card-title">Header e navegação com identidade própria</div><div class="ch-sol-card-desc">Logo Itaú, paleta laranja e microcopy adaptado ("Consórcio Itaú") substituíram os equivalentes do BomConsórcio em todos os pontos de contato, do login à tela de "sem oferta no momento".</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">03</div><div class="ch-sol-card-title">Landing page da parceria</div><div class="ch-sol-card-desc">Página dedicada com "Como funciona", vantagens de vender com o BomConsórcio e FAQ, criada para legitimar a parceria bancária antes mesmo do cliente entrar no fluxo de venda.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">04</div><div class="ch-sol-card-title">Mini design system White Label</div><div class="ch-sol-card-desc">Construí um mini design system cobrindo os dois ambientes (externo e interno), desktop e app, PF e PJ — tokens de marca, componentes de formulário, estados de erro e sucesso — sustentando toda a jornada mapeada sem retrabalho tela a tela.</div></div></div><div class="ch-sol-aside"><div class="ch-sol-aside-label">A decisão mais negociada</div><p>A cada rodada de aprovação, o time de branding do Itaú pedia ajustes finos — tom exato do laranja, peso da fonte no header, distância mínima do logo. Cada ida e volta consumia dias que o cronograma da parceria não previa. A saída não foi negociar menos rodadas, foi antecipar: levantei o manual de marca do Itaú antes de desenhar a primeira tela e validei protótipos de baixa fidelidade direto com a responsável por branding, para só então avançar para alta fidelidade. Isso não eliminou as rodadas de aprovação, mas reduziu o retrabalho em cada uma, protegendo o prazo apertado da parceria.</p></div>',
+    resultsLabel:'Resultados',
+    medicao:{texto:'A entrega no prazo e a cobertura completa (PF/PJ, desktop/app) são fatos verificáveis do escopo entregue. Os demais resultados são projeções, já que não houve acesso a dados pós-lançamento no escopo deste projeto — baseadas no acompanhamento qualitativo das rodadas de aprovação de marca e no comparativo de componentes reaproveitados vs. recriados durante a adaptação.',tools:['Rodadas de aprovação — acompanhamento qualitativo','Comparativo de componentes do design system']},
+    results:[
+      ['0→1','Entrega completa da white label — dois ambientes, desktop e app, PF e PJ — dentro do prazo acordado com o Itaú.','ti-calendar-check','check','entregue'],
+      ['80%+','Hipótese: proporção de componentes do BomConsórcio reaproveitados sem reconstrução, graças à tokenização de marca.','ti-puzzle','hyp','hipótese'],
+      ['PF + PJ','Cobertura completa da jornada mapeada e desenhada, em desktop e app, para pessoa física e jurídica.','ti-devices','check','entregue'],
+      ['-40%','Hipótese: menor tempo de aprovação de marca por tela, com protótipos de baixa fidelidade validados antes da alta fidelidade.','ti-clock','hyp','hipótese']
+    ],
+    en:{
+      ey:'White Label · Design System · Fintech',
+      ttl:'On the outside, Itaú.<br><em>On the inside, BomConsórcio.</em>',
+      meta:['Product Designer','BomConsórcio × Itaú · Fintech','Figma'],
+      hook:'"The deadline was tight and the bar was bank-grade. It wasn\'t enough to reuse the BomConsórcio engine, every pixel had to pass Itaú\'s brand approval before going live. The challenge wasn\'t designing from scratch. It was making an entire system look like it had always belonged to the bank, without stopping operations to rebuild it."',
+      context:'<p>The flow\'s goal is simple to state and complex to deliver: an Itaú client with a cancelled consortium quota enters the system and receives a credit anticipation offer for that quota, following the same secondary sale engine already validated by BomConsórcio. From the first click to the offer on screen, the client goes through a full process of identification, validation and simulation.</p><p>The white label was split into two environments. <strong>Environment 1 (external)</strong> covers everything before login — the partnership landing page, signup, token validation and password recovery. <strong>Environment 2 (internal)</strong> starts once the client logs in — quota location, identity verification and offer simulation. Both needed the same visual and brand coherence, despite being completely different stages and contexts.</p>',
+      diags:[
+        {icon:'🎨',title:'No isolated theme layer',desc:'BomConsórcio\'s base didn\'t separate brand from flow logic. Color, typography and logo lived directly inside components, so swapping the brand meant rewriting screens, not swapping a layer.'},
+        {icon:'🏦',title:'Bank-grade approval bar',desc:'Every screen went through Itaú\'s branding team before development. An orange shade off the manual or a wrong font weight could stall delivery for days.'},
+        {icon:'🧩',title:'Two environments, one brand',desc:'The external (pre-login) and internal (post-login) environments had entirely different purposes and screens, but needed to feel like one continuous Itaú system, with no visible seam between them.'},
+        {icon:'🔀',title:'Two brands, one login',desc:'Clients with a quota from another administrator needed to be identified and redirected without confusing which system they were in.'},
+        {icon:'📢',title:'A bank + fintech partnership with nowhere to explain itself',desc:'There was no page justifying why an Itaú client should trust a partner fintech to sell their quota. Without that layer, initial distrust was a real abandonment risk.'}
+      ],
+      kpis:[
+        {icon:'🗺️',label:'Mapped coverage',val:'PF + PJ · Desktop + App',desc:'Full journey mapped and designed: site access, signup, token validation, login, password recovery, quota location, offer and error states'},
+        {icon:'⏱',label:'Brand approval time',val:'Review cycle',desc:'Days between screen delivery and approval from Itaú\'s branding team'},
+        {icon:'♻️',label:'Design system reuse',val:'% of components',desc:'Proportion of BomConsórcio components reused without rebuild'},
+        {icon:'🚀',label:'Time to launch',val:'Kickoff → Launch',desc:'Total time between project kickoff and the white label launch'}
+      ],
+      role:'Product Designer responsible for the full white label of the BomConsórcio flow for Itaú, covering both product environments — external (pre-login) and internal (post-login) — in desktop and app versions, for individual and business clients. I mapped the entire user journey: site access, signup, token validation, identity verification, login, password recovery, quota location, offer simulation and error states. I also built a mini design system to sustain the adaptation. Worked directly with Itaú\'s branding lead.',
+      insight:'<p>White label isn\'t a reskin. The temptation was to treat the adaptation as swapping color and logo, but the bank\'s approval bar exposed a structural debt: BomConsórcio had no theme layer separate from its flow logic. The real work was <strong>tokenizing the brand</strong> — isolating what was "Itaú" from what was "quota sale process" — so the next partner brand could be plugged in without rewriting anything. Bank compliance isn\'t a design obstacle, it\'s an architecture test.</p>',
+      objetivo:'Deliver a complete white label version of the BomConsórcio flow — external and internal environments, desktop and app, individual and business clients — fully aligned with Itaú\'s brand and compliance, with a mini design system sustaining the entire journey, from site access to the quota offer.',
+      krs:[
+        {txt:'Reduce average brand approval time per screen',meta:'-40% (hypothesis)'},
+        {txt:'Increase the proportion of components reused without rebuild',meta:'80%+ (hypothesis)'},
+        {txt:'Launch the white label version within the deadline agreed with Itaú',meta:'On time'}
+      ],
+      sol:'<div class="ch-sol-cards"><div class="ch-sol-card"><div class="ch-sol-card-num">01</div><div class="ch-sol-card-title">Brand tokenization</div><div class="ch-sol-card-desc">Color, typography, logo and header icons were isolated into a theme layer, pluggable on top of BomConsórcio\'s flow architecture — without touching the signup, offer or identity verification logic.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">02</div><div class="ch-sol-card-title">Header and navigation with its own identity</div><div class="ch-sol-card-desc">Itaú\'s logo, orange palette and adapted microcopy ("Consórcio Itaú") replaced BomConsórcio\'s equivalents across every touchpoint, from login to the "no offer available" screen.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">03</div><div class="ch-sol-card-title">Partnership landing page</div><div class="ch-sol-card-desc">A dedicated page with "How it works," reasons to sell through BomConsórcio, and an FAQ, built to legitimize the banking partnership before the client even entered the sale flow.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">04</div><div class="ch-sol-card-title">White label mini design system</div><div class="ch-sol-card-desc">I built a mini design system covering both environments (external and internal), desktop and app, individual and business clients — brand tokens, form components, error and success states — sustaining the entire mapped journey without screen-by-screen rework.</div></div></div><div class="ch-sol-aside"><div class="ch-sol-aside-label">The most negotiated decision</div><p>At every approval round, Itaú\'s branding team asked for fine adjustments — the exact shade of orange, the header\'s font weight, the logo\'s minimum clear space. Each round-trip ate into days the partnership\'s timeline hadn\'t budgeted for. The fix wasn\'t negotiating fewer rounds, it was getting ahead of them: I pulled Itaú\'s brand manual before drawing the first screen and validated low-fidelity prototypes directly with the branding lead, only moving to high fidelity afterward. That didn\'t eliminate approval rounds, but it cut rework in each one, protecting the partnership\'s tight deadline.</p></div>',
+      resultsLabel:'Results',
+      results:[
+        ['0→1','Full white label delivery — two environments, desktop and app, individual and business — within the deadline agreed with Itaú.','ti-calendar-check','check','delivered'],
+        ['80%+','Hypothesis: proportion of BomConsórcio components reused without rebuild, thanks to brand tokenization.','ti-puzzle','hyp','hypothesis'],
+        ['PF + PJ','Full journey coverage mapped and designed, in desktop and app, for individual and business clients.','ti-devices','check','delivered'],
+        ['-40%','Hypothesis: lower brand approval time per screen, with low-fidelity prototypes validated before high fidelity.','ti-clock','hyp','hypothesis']
+      ]
+    }
+  }
 
 };
 
@@ -624,6 +705,7 @@ function openCase(id,title,push){
 
   const ch=document.createElement('div');
   ch.className='ch';
+  ch.id='ch-'+id;
   ch.style.setProperty('--case-color',c.color);
 
   // Header
@@ -641,7 +723,7 @@ function openCase(id,title,push){
   const heroImg=document.createElement('img');
   heroImg.src='img/'+id+'-case-hero.jpg';
   heroImg.alt=title;
-  heroImg.style.cssText='width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;';
+  heroImg.style.cssText='width:100%;height:auto;display:block;cursor:zoom-in;';
   heroImg.addEventListener('click', function(){ lbOpen(heroImg.src); });
   heroImg.onerror=function(){ this.style.display='none'; imgArea.innerHTML='<div class="ch-img-ph">'+id+'-case-hero.jpg</div>'; };
   imgArea.appendChild(heroImg);
@@ -673,6 +755,9 @@ function openCase(id,title,push){
     })() : '')
 
     +'<div class="ch-role"><span class="ch-role-lbl" data-pt="Meu papel" data-en="My role">'+(currentLang==='en'?'My role':'Meu papel')+'</span><span class="ch-role-txt">'+d.role+'</span></div>'
+
+    /* Organização do fluxo (Figma) */
+    +(c.orgImg ? '<div class="ch-func-img"><img src="img/'+c.orgImg+'" alt="Organização do fluxo" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>' : '')
 
     /* O Problema */
     +'<div class="ch-highlight"><div class="ch-highlight-label">'+t("The Problem","O Problema")+'</div>'+d.context+'</div>'
@@ -719,12 +804,12 @@ function openCase(id,title,push){
         +'<div class="ch-kr-dots"><div class="ch-kr-dot"></div><div class="ch-kr-dot"></div><div class="ch-kr-dot"></div></div>'
         +'<div class="ch-kr-list">'+d.krs.map(function(kr,i){return '<div class="ch-kr"><div class="ch-kr-num">KR'+(i+1)+'</div><div class="ch-kr-txt">'+kr.txt+'</div><div class="ch-kr-badge">'+kr.meta+'</div></div>';}).join('')+'</div>'
         +'<div class="ch-kpi-drops"><div class="ch-kpi-drop"></div><div class="ch-kpi-drop"></div><div class="ch-kpi-drop"></div></div>'
-        +'<div class="ch-kpi-grid">'+d.kpis.map(function(k){return '<div class="ch-kpi"><div class="ch-kpi-label">'+k.label+'</div><div class="ch-kpi-val">'+k.val+'</div><div class="ch-kpi-desc">'+k.desc+'</div></div>';}).join('')+'</div>'
+        +'<div class="ch-kpi-grid'+(d.kpis.length===4?' ch-kpi-grid-4':'')+'">'+d.kpis.map(function(k){return '<div class="ch-kpi"><div class="ch-kpi-label">'+k.label+'</div><div class="ch-kpi-val">'+k.val+'</div><div class="ch-kpi-desc">'+k.desc+'</div></div>';}).join('')+'</div>'
       +'</div>'
     +'</div>'
 
     /* Processo */
-    +'<div class="ch-func-img"><img src="img/'+id+'-processo.jpg" alt="proc" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>'
+    +'<div class="ch-func-img"><img src="img/'+(c.processoImg || (id+'-processo.jpg'))+'" alt="proc" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>'
 
     /* Como pensei a solução */
     +'<div class="ch-highlight"><div class="ch-highlight-label">'+t("How I approached the solution","Como pensei a solução")+'</div>'+d.insight+d.sol
@@ -796,6 +881,9 @@ function openCase(id,title,push){
       var badge = r[2] ? '<div class="res-badge '+r[3]+'"><i class="ti '+r[2]+'" aria-hidden="true"></i> '+badgeWord+'</div>' : '';
       return '<div class="res-item">'+badge+'<div class="res-n">'+r[0]+'</div><div class="res-l">'+r[1]+'</div></div>';
     }).join('')+'</div>'
+
+    /* Mockup mobile — imagem final */
+    +(c.mobileImg ? '<div class="ch-func-img" style="margin-top:2rem;"><img src="img/'+c.mobileImg+'" alt="mockup mobile" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>' : '')
   ch.appendChild(bd);
   slot.appendChild(ch);
 
@@ -996,7 +1084,7 @@ function initCoverflow(id){
   var isDragging = false;
 
   function getCardW(){
-    return parseInt(wrap.dataset.cardW) || (cards[0] ? cards[0].offsetWidth : 200);
+    return (cards[0] ? cards[0].offsetWidth : 0) || parseInt(wrap.dataset.cardW) || 200;
   }
 
   function render(){
@@ -1043,6 +1131,8 @@ function initCoverflow(id){
   });
   wrap.querySelector('.cf-btn-prev').addEventListener('click', function(){ navigate(-1); });
   wrap.querySelector('.cf-btn-next').addEventListener('click', function(){ navigate(1); });
+
+  window.addEventListener('resize', render);
 
   /* Touch swipe */
   wrap.addEventListener('touchstart', function(e){
