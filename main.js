@@ -293,15 +293,17 @@ function closeMob(){
 
 /* ── REVEAL ON SCROLL ── */
 const allReveal = document.querySelectorAll('.reveal');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-  });
-}, { threshold: .05, rootMargin: '0px 0px -20px 0px' });
-allReveal.forEach(r => obs.observe(r));
-setTimeout(() => {
-  document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-}, 1400);
+if('IntersectionObserver' in window){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: .1, rootMargin: '0px 0px -100px 0px' });
+  allReveal.forEach(r => obs.observe(r));
+} else {
+  /* fallback só pra navegadores sem suporte a IntersectionObserver */
+  allReveal.forEach(el => el.classList.add('visible'));
+}
 
 const CASES={
   wellhub:{
@@ -688,6 +690,79 @@ const CASES={
       ]
     }
   }
+  ,
+  passaporte:{
+    color:'#B8860B',bg:'#111',
+    ey:'Assinatura · Pagamentos · HealthTech',
+    ttl:'Uma assinatura,<br><em>dois lados da venda.</em>',
+    meta:['Product Designer','Kivid · HealthTech · Fintech','Figma'],
+    hook:'"Desenhar a tela de checkout é a parte fácil. O difícil é garantir que, no momento em que o cliente termina de pagar no app, o vendedor veja exatamente a mesma venda confirmada no portal dele, não importa se o pagamento foi por PIX, cartão, pontos ou na maquininha. Não era uma tela. Eram dois sistemas contando a mesma história ao mesmo tempo."',
+    context:'<p>O Passaporte Kivid é uma assinatura que dá acesso a uma rede de saúde com valores especiais, vendida tanto pra uma pessoa individual quanto pra um plano família, com titular e dependentes. O produto tinha duas pontas que precisavam ser desenhadas juntas: o <strong>app do cliente</strong>, onde a família se cadastra e paga a assinatura, e o <strong>portal web do afiliado</strong>, onde o vendedor gerencia vendas, recebe pagamentos e acompanha comissão.</p><p>Cada ponta tinha sua própria complexidade de pagamento. No app, o cliente podia pagar via PIX, cartão, pontos+cartão ou pontos+PIX. No portal, o afiliado podia vender por link de pagamento, PIX ou maquininha física. Design o suficiente pra fazer a venda acontecer nos dois lados, sem os dois sistemas nunca conflitarem sobre o que realmente foi vendido.</p>',
+    diags:[
+      {icon:'💳',title:'Quatro formas de pagar, uma só experiência',desc:'PIX, cartão, pontos+cartão e pontos+PIX no app do cliente precisavam parecer parte do mesmo fluxo, não quatro fluxos colados um no outro — cada um com resumo, confirmação e estado de erro próprios.'},
+      {icon:'🔄',title:'Duas telas, uma só verdade',desc:'O que o cliente via como "pago" no app precisava bater exatamente com o que o afiliado via como "vendido" no portal — sem lag perceptível, sem estados divergentes entre as duas pontas do sistema.'},
+      {icon:'👨‍👩‍👧',title:'Cadastro de família sem parecer burocracia',desc:'Adicionar cada membro da família exigia nome, nascimento, CPF e contato — dados sensíveis demais pra um formulário longo e frio, mas obrigatórios demais pra pular etapas.'},
+      {icon:'🧾',title:'Três canais de recebimento pro afiliado',desc:'O vendedor podia receber por PIX, cartão ou maquininha física — cada canal com timing e interface completamente diferentes, mas precisando terminar no mesmo tipo de confirmação e recibo.'}
+    ],
+    kpis:[
+      {icon:'🗺️',label:'Cobertura completa',val:'App cliente + Portal afiliado',desc:'Sistema desenhado nas duas pontas da mesma transação, do cadastro da família à confirmação da venda'},
+      {icon:'💳',label:'Métodos de pagamento unificados',val:'4 no app · 3 no portal',desc:'PIX, cartão, pontos+cartão e pontos+PIX do lado do cliente; PIX, cartão e maquininha do lado do afiliado'},
+      {icon:'👏',label:'Momento de celebração',val:'Microinteração no sucesso',desc:'Estado de confirmação com animação de celebração, fechando o fluxo com reconhecimento em vez de só uma confirmação fria'},
+      {icon:'🚀',label:'Lançado em produção',val:'Sistema no ar',desc:'App do cliente e portal do afiliado publicados e em uso real, não apenas protótipo'}
+    ],
+    role:'Product Designer responsável por desenhar as duas pontas do sistema — o app do cliente (assinatura e pagamento do Passaporte) e o portal web do afiliado (venda, recebimento e comissão) — trabalhando em conjunto com outro(s) designer(s) do time Kivid.',
+    insight:'<p>O desafio real não era nenhuma tela isolada de checkout. Era manter dois sistemas independentes — o app do consumidor e o portal do vendedor — contando exatamente a mesma história sobre a mesma transação. Cada método de pagamento no app precisava de um equivalente reconhecível no portal: "pago" pro cliente tinha que virar "vendido" pro afiliado, no mesmo instante, com a mesma clareza. <strong>Desenhar os dois lados juntos</strong>, não em paralelo, foi o que evitou que o sistema virasse dois produtos desconectados fingindo ser um só.</p>',
+    objetivo:'Entregar um sistema de assinatura completo cobrindo o app do cliente e o portal do afiliado, unificando múltiplos métodos de pagamento dos dois lados sem fragmentar a experiência nem transformar o cadastro de família em burocracia.',
+    krs:[
+      {txt:'Unificar a lógica visual dos 4 métodos de pagamento do app do cliente',meta:'Mesma estrutura de resumo/confirmação'},
+      {txt:'Garantir que os 3 canais de recebimento do afiliado sigam o mesmo padrão de confirmação',meta:'PIX, cartão, maquininha'},
+      {txt:'Reduzir a sensação de burocracia no cadastro de membros da família',meta:'Fluxo conversacional, um dado por vez'}
+    ],
+    sol:'<div class="ch-sol-cards"><div class="ch-sol-card"><div class="ch-sol-card-num">01</div><div class="ch-sol-card-title">Formulário conversacional pra família</div><div class="ch-sol-card-desc">Nome, nascimento, CPF e contato de cada membro são coletados um de cada vez, em bolhas de chat, em vez de um formulário longo — reduz a sensação de burocracia sem abrir mão da validação de cada campo.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">02</div><div class="ch-sol-card-title">Camada de pagamento unificada</div><div class="ch-sol-card-desc">Resumo, confirmação e estado de sucesso seguem a mesma estrutura visual nos quatro métodos de pagamento do app e nos três canais de recebimento do portal — muda o meio, não a lógica da tela.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">03</div><div class="ch-sol-card-title">Portal do afiliado com múltiplos canais</div><div class="ch-sol-card-desc">Link de pagamento, PIX e maquininha física desenhados como variações do mesmo padrão de confirmação, com dashboard de vendas (realizadas, em andamento, canceladas) sempre refletindo o estado real da venda.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">04</div><div class="ch-sol-card-title">Recibo e confirmação com celebração</div><div class="ch-sol-card-desc">O estado de sucesso fecha o fluxo com uma microinteração de celebração, e gera um recibo formal — equilibrando o lado emocional da compra com a exigência de comprovante para o cliente.</div></div></div><div class="ch-sol-aside"><div class="ch-sol-aside-label">A decisão mais negociada</div><p>A área de compliance queria um formulário tradicional pra coletar os dados de cada membro da família — mais previsível de auditar. O time de produto queria uma experiência conversacional, mais leve pra quem está cadastrando três ou quatro pessoas seguidas. A saída não foi escolher um lado: o fluxo manteve a interface em bolhas de chat, mas cada dado era validado e armazenado exatamente como um formulário formal validaria — a camada visual mudou, a estrutura de dados por trás não.</p></div>',
+    resultsLabel:'Resultados',
+    medicao:{texto:'O sistema foi lançado em produção, então a cobertura completa (app + portal) e os canais de pagamento são fatos verificáveis do escopo entregue. Os demais resultados são projeções, já que não houve acesso a dados de uso pós-lançamento no escopo deste projeto — baseadas no acompanhamento qualitativo do fluxo durante o desenvolvimento.',tools:['Testes internos do fluxo de família','Comparativo de estrutura entre os métodos de pagamento']},
+    results:[
+      ['✓','Sistema completo lançado em produção, cobrindo o app do cliente e o portal do afiliado.','ti-rocket','check','entregue'],
+      ['4 → 1','Hipótese: unificar a estrutura visual dos 4 métodos de pagamento reduz retrabalho de manutenção e inconsistência entre eles.','ti-credit-card','hyp','hipótese'],
+      ['3 canais','Afiliado recebe por PIX, cartão e maquininha seguindo o mesmo padrão de confirmação e recibo.','ti-devices','check','entregue'],
+      ['↓','Hipótese: o fluxo conversacional de cadastro de família reduz abandono em comparação a um formulário tradicional.','ti-users','hyp','hipótese']
+    ],
+    en:{
+      ey:'Subscription · Payments · HealthTech',
+      ttl:'One subscription,<br><em>two sides of the sale.</em>',
+      meta:['Product Designer','Kivid · HealthTech · Fintech','Figma'],
+      hook:'"Designing the checkout screen is the easy part. The hard part is making sure that the moment a client finishes paying in the app, the seller sees the exact same sale confirmed in their portal — whether the payment was PIX, card, points, or a physical card machine. It wasn\'t one screen. It was two systems telling the same story at the same time."',
+      context:'<p>Passaporte Kivid is a subscription that grants access to a healthcare network at special rates, sold either to an individual or to a family plan with a policyholder and dependents. The product had two ends that needed to be designed together: the <strong>client app</strong>, where the family signs up and pays for the subscription, and the <strong>affiliate\'s web portal</strong>, where the seller manages sales, receives payments, and tracks commission.</p><p>Each end had its own payment complexity. In the app, the client could pay via PIX, card, points+card, or points+PIX. In the portal, the affiliate could sell through a payment link, PIX, or a physical card machine. The job was to make the sale work on both ends, without the two systems ever disagreeing about what was actually sold.</p>',
+      diags:[
+        {icon:'💳',title:'Four ways to pay, one experience',desc:'PIX, card, points+card, and points+PIX in the client app needed to feel like one flow, not four flows stitched together — each with its own summary, confirmation, and error state.'},
+        {icon:'🔄',title:'Two screens, one truth',desc:'What the client saw as "paid" in the app had to match exactly what the affiliate saw as "sold" in the portal — no perceptible lag, no diverging states between the two ends of the system.'},
+        {icon:'👨‍👩‍👧',title:'Family signup without feeling like paperwork',desc:'Adding each family member required name, birth date, CPF, and contact — too sensitive for a long, cold form, but too required to skip steps.'},
+        {icon:'🧾',title:'Three receiving channels for the affiliate',desc:'The seller could receive payment via PIX, card, or a physical card machine — each channel with completely different timing and interface, but needing to land on the same kind of confirmation and receipt.'}
+      ],
+      kpis:[
+        {icon:'🗺️',label:'Full coverage',val:'Client app + Affiliate portal',desc:'System designed on both ends of the same transaction, from family signup to sale confirmation'},
+        {icon:'💳',label:'Unified payment methods',val:'4 in the app · 3 in the portal',desc:'PIX, card, points+card, and points+PIX on the client side; PIX, card, and card machine on the affiliate side'},
+        {icon:'👏',label:'Celebration moment',val:'Success microinteraction',desc:'Confirmation state with a celebration animation, closing the flow with recognition instead of just a cold confirmation'},
+        {icon:'🚀',label:'Live in production',val:'System shipped',desc:'Client app and affiliate portal published and in real use, not just a prototype'}
+      ],
+      role:'Product Designer responsible for designing both ends of the system — the client app (Passaporte subscription and payment) and the affiliate\'s web portal (sales, payment receiving, and commission) — working alongside other designer(s) on the Kivid team.',
+      insight:'<p>The real challenge wasn\'t any single checkout screen. It was keeping two independent systems — the consumer app and the seller portal — telling exactly the same story about the same transaction. Every payment method in the app needed a recognizable equivalent in the portal: "paid" for the client had to become "sold" for the affiliate, at the same moment, with the same clarity. <strong>Designing both sides together</strong>, not in parallel, is what kept the system from becoming two disconnected products pretending to be one.</p>',
+      objetivo:'Deliver a complete subscription system covering the client app and the affiliate portal, unifying multiple payment methods on both ends without fragmenting the experience or turning family signup into paperwork.',
+      krs:[
+        {txt:'Unify the visual logic of the 4 payment methods in the client app',meta:'Same summary/confirmation structure'},
+        {txt:'Ensure the affiliate\'s 3 receiving channels follow the same confirmation pattern',meta:'PIX, card, card machine'},
+        {txt:'Reduce the perceived paperwork feel of the family signup flow',meta:'Conversational flow, one field at a time'}
+      ],
+      sol:'<div class="ch-sol-cards"><div class="ch-sol-card"><div class="ch-sol-card-num">01</div><div class="ch-sol-card-title">Conversational family form</div><div class="ch-sol-card-desc">Each family member\'s name, birth date, CPF, and contact are collected one at a time, in chat bubbles, instead of a long form — reducing the paperwork feel without giving up field-level validation.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">02</div><div class="ch-sol-card-title">Unified payment layer</div><div class="ch-sol-card-desc">Summary, confirmation, and success states follow the same visual structure across the app\'s four payment methods and the portal\'s three receiving channels — the medium changes, the screen logic doesn\'t.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">03</div><div class="ch-sol-card-title">Affiliate portal with multiple channels</div><div class="ch-sol-card-desc">Payment link, PIX, and physical card machine designed as variations of the same confirmation pattern, with a sales dashboard (completed, in progress, canceled) always reflecting the sale\'s real state.</div></div><div class="ch-sol-card"><div class="ch-sol-card-num">04</div><div class="ch-sol-card-title">Receipt and celebration confirmation</div><div class="ch-sol-card-desc">The success state closes the flow with a celebration microinteraction and generates a formal receipt — balancing the emotional side of the purchase with the client\'s need for proof of payment.</div></div></div><div class="ch-sol-aside"><div class="ch-sol-aside-label">The most negotiated decision</div><p>Compliance wanted a traditional form to collect each family member\'s data — more predictable to audit. The product team wanted a conversational experience, lighter for someone registering three or four people in a row. The fix wasn\'t picking a side: the flow kept the chat-bubble interface, but each field was validated and stored exactly as a formal form would validate it — the visual layer changed, the data structure behind it didn\'t.</p></div>',
+      resultsLabel:'Results',
+      results:[
+        ['✓','Complete system shipped to production, covering the client app and the affiliate portal.','ti-rocket','check','delivered'],
+        ['4 → 1','Hypothesis: unifying the visual structure of the 4 payment methods reduces maintenance rework and inconsistency between them.','ti-credit-card','hyp','hypothesis'],
+        ['3 channels','Affiliate receives via PIX, card, and card machine following the same confirmation and receipt pattern.','ti-devices','check','delivered'],
+        ['↓','Hypothesis: the conversational family signup flow reduces abandonment compared to a traditional form.','ti-users','hyp','hypothesis']
+      ]
+    }
+  }
 
 };
 
@@ -760,7 +835,7 @@ function openCase(id,title,push){
     +(c.orgImg ? '<div class="ch-func-img"><img src="img/'+c.orgImg+'" alt="Organização do fluxo" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>' : '')
 
     /* O Problema */
-    +'<div class="ch-highlight"><div class="ch-highlight-label">'+t("The Problem","O Problema")+'</div>'+d.context+'</div>'
+    +'<div class="ch-highlight"><div class="ch-highlight-label" data-split>'+t("The Problem","O Problema")+'</div>'+d.context+'</div>'
 
     /* Persona (checkout) */
     +(c.personaImg ? '<div class="ch-func-img"><img src="img/'+c.personaImg+'" alt="Persona" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>' : '')
@@ -796,7 +871,7 @@ function openCase(id,title,push){
     +(c.funcImg ? '<div class="ch-func-img"><img src="img/'+c.funcImg+'" alt="func" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>' : '')
 
     /* KPIs & OKRs */
-    +'<div class="ch-highlight"><div class="ch-highlight-label">KPIs &amp; OKRs</div>'
+    +'<div class="ch-highlight"><div class="ch-highlight-label" data-split>KPIs &amp; OKRs</div>'
       +'<div class="ch-okr-block">'
         +'<div class="ch-okr-head"><div class="ch-okr-head-icon">&#9678;</div><div><span class="ch-okr-head-label">'+t("Objective","Objetivo")+'</span><div class="ch-okr-head-obj">'+d.objetivo+'</div></div></div>'
         +'<div class="ch-okr-trunk"></div>'
@@ -812,7 +887,7 @@ function openCase(id,title,push){
     +'<div class="ch-func-img"><img src="img/'+(c.processoImg || (id+'-processo.jpg'))+'" alt="proc" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>'
 
     /* Como pensei a solução */
-    +'<div class="ch-highlight"><div class="ch-highlight-label">'+t("How I approached the solution","Como pensei a solução")+'</div>'+d.insight+d.sol
+    +'<div class="ch-highlight"><div class="ch-highlight-label" data-split>'+t("How I approached the solution","Como pensei a solução")+'</div>'+d.insight+d.sol
     +(c.wireframes ? '<div class="ch-func-img"><img src="img/'+c.wireframes+'" alt="wireframes" style="width:100%;display:block;cursor:zoom-in;" onclick="lbOpen(this.src)"></div>' : '')
     +'</div>'
 
@@ -893,6 +968,7 @@ function openCase(id,title,push){
   setTimeout(animateCaseEntrance,50);
   setTimeout(initCompSliders,100);
   setTimeout(function(){ initCoverflow(id); if(c.carousel) initCoverflow(id+'-carousel'); },150);
+  setTimeout(function(){ initCurtainReveal(ch); initLetterReveal(ch); },150);
 
   if(push){
     history.pushState({ page: 'case', id: id, title: title }, '', '#case-' + id);
@@ -1253,28 +1329,6 @@ function initCompSliders(){
   });
 })();
 
-/* ── Card 3D tilt ── */
-(function(){
-  function initTilt(){
-    document.querySelectorAll('.pc').forEach(function(card){
-      card.addEventListener('mousemove', function(e){
-        var r = card.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width  - 0.5;
-        var y = (e.clientY - r.top)  / r.height - 0.5;
-        card.style.transform = 'perspective(700px) rotateY('+(x*7)+'deg) rotateX('+(-y*7)+'deg) translateZ(6px)';
-      });
-      card.addEventListener('mouseleave', function(){
-        card.style.transform = 'perspective(700px) rotateY(0deg) rotateX(0deg) translateZ(0px)';
-      });
-    });
-  }
-  initTilt();
-  /* Re-init after DOM changes (language switch etc.) */
-  var obs = new MutationObserver(initTilt);
-  var grid = document.querySelector('.projects-grid');
-  if(grid) obs.observe(grid, {childList:true, subtree:true});
-})();
-
 /* ── Number counter animation ── */
 (function(){
   function animateStat(el){
@@ -1326,6 +1380,86 @@ function initCompSliders(){
     });
   }
   initMagnetic();
+})();
+
+/* ── Efeitos estilo Webflow: split-letras, skew no scroll, cortina ── */
+
+/* 1. Texto letra por letra ao entrar na tela */
+function initLetterReveal(root){
+  var scope = root || document;
+  var targets = scope.querySelectorAll('[data-split]:not([data-split-done])');
+  targets.forEach(function(el){
+    el.setAttribute('data-split-done','1');
+    var text = el.textContent;
+    el.textContent = '';
+    var frag = document.createDocumentFragment();
+    text.split('').forEach(function(ch, i){
+      var span = document.createElement('span');
+      span.className = 'split-letter';
+      span.style.transitionDelay = (i * 22) + 'ms';
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      frag.appendChild(span);
+    });
+    el.appendChild(frag);
+    el.classList.add('split-ready');
+  });
+  if(!targets.length) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('split-in');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {threshold:.4});
+  targets.forEach(function(el){ obs.observe(el); });
+}
+document.addEventListener('DOMContentLoaded', function(){ initLetterReveal(); });
+if(document.readyState !== 'loading') initLetterReveal();
+
+/* 3. Reveal em "cortina" — painel desliza revelando a imagem por trás */
+function initCurtainReveal(root){
+  var scope = root || document;
+  var wraps = scope.querySelectorAll('.ch-func-img:not([data-curtain-done]), .ch-img-area:not([data-curtain-done])');
+  wraps.forEach(function(wrap){
+    wrap.setAttribute('data-curtain-done','1');
+    var curtain = document.createElement('div');
+    curtain.className = 'curtain-panel';
+    wrap.style.position = wrap.style.position || 'relative';
+    wrap.appendChild(curtain);
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          setTimeout(function(){ curtain.classList.add('curtain-open'); }, 120);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.2});
+    obs.observe(wrap);
+  });
+}
+
+/* ── Parallax nos cards da home ── */
+(function(){
+  var cardImgs = document.querySelectorAll('.pc-img img');
+  if(!cardImgs.length) return;
+  var ticking = false;
+  function updateParallax(){
+    cardImgs.forEach(function(img){
+      var card = img.closest('.pc');
+      var rect = card.getBoundingClientRect();
+      var vh = window.innerHeight;
+      if(rect.bottom < 0 || rect.top > vh) return; /* fora da tela, não calcula */
+      var progress = (rect.top - vh) / (-rect.height - vh) - 0.5; /* -0.5..0.5 aprox */
+      var shift = Math.max(-14, Math.min(14, progress * 28));
+      img.style.setProperty('--pc-parallax', shift.toFixed(1)+'px');
+    });
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if(!ticking){ window.requestAnimationFrame(updateParallax); ticking = true; }
+  }, {passive:true});
+  updateParallax();
 })();
 
 /* ── Parallax no hero ── */
